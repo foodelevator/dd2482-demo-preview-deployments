@@ -3,7 +3,7 @@ WORKDIR /app
 
 RUN apk add --no-cache uhttpd
 
-RUN echo "hello there from a PR!!" > index.html
+RUN echo "hello there from a PR!" > index.html
 
 EXPOSE 80
 CMD ["uhttpd", "-fp80"]
