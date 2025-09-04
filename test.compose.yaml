@@ -2,7 +2,7 @@ services:
   test:
     labels:
       - traefik.enable=true
-      - traefik.http.routers.test-${PR}.rule=Host(`${PR}.test.localhost`)
+      - traefik.http.routers.test-${PR}.rule=Host(`${PR}.devops-demo.0m.nu`)
       - traefik.http.routers.test-${PR}.entrypoints=http
     build:
       context: .
