@@ -1,0 +1,15 @@
+services:
+  test:
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.test-${PR}.rule=Host(`${PR}.test.localhost`)
+      - traefik.http.routers.test-${PR}.entrypoints=http
+    build:
+      context: .
+      dockerfile: test.Dockerfile
+    networks:
+      - traefik
+
+networks:
+  traefik:
+    external: true
