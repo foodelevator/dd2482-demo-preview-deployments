@@ -1,0 +1,27 @@
+name: "Deploy Pull Request Preview"
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  deploy_pr_preview:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout PR
+        uses: actions/checkout@v5
+
+      - name: Load SSH Key
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_KEY" > ~/.ssh/id_ed25519
+          echo "devops-demo.0m.nu ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAQBMZ5lgvnQwCesaZoOpM6kRECJM2seitTI19L+Pi/N" >> ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/id_ed25519
+        env:
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+
+      - name: Run docker compose up
+        env:
+          DOCKER_HOST: ssh://root@devops-demo.0m.nu
+          PR: ${{ github.event.number }}
+        run: docker compose --project-name test-$PR -f test.compose.yaml up --build -d
