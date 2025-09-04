@@ -1,0 +1,16 @@
+services:
+  traefik:
+    image: traefik:v3.5.1
+    volumes:
+      - ./traefik.yaml:/etc/traefik/traefik.yml:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 8080:8080
+      - 80:80
+    networks:
+      - traefik
+
+networks:
+  traefik:
+    driver: bridge
+    name: traefik
