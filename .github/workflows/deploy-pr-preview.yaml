@@ -21,6 +21,7 @@ jobs:
           SSH_KEY: ${{ secrets.SSH_KEY }}
 
       - name: Copy database from staging
+        if: github.event.action == 'opened'
         env:
           NAME: preview-${{ github.event.number }}
         run: |
