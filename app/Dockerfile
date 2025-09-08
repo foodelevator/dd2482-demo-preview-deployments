@@ -3,5 +3,7 @@ WORKDIR /app
 
 RUN apk add --no-cache uhttpd
 
+COPY . .
+
 EXPOSE 80
 CMD ["uhttpd", "-fp80"]
