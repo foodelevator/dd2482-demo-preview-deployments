@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Increment Button</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    #counter {
+      font-size: 2em;
+      margin: 20px;
+    }
+    button {
+      font-size: 1.2em;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="counter">0</div>
+  <button onclick="increment()">Increment</button>
+
+  <script>
+    let count = 0;
+    function increment() {
+      count++;
+      document.getElementById("counter").innerText = count;
+    }
+  </script>
+</body>
+</html>
