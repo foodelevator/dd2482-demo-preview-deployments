@@ -20,11 +20,11 @@ jobs:
         env:
           SSH_KEY: ${{ secrets.SSH_KEY }}
 
-      - name: Copy database
+      - name: Copy database from staging
         env:
           NAME: preview-${{ github.event.number }}
         run: |
-          sudo -u postgres psql -c "
+          ssh user@ipv4-ssh.devops-demo.0m.nu -- sudo -u postgres psql -c "
               SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = 'test-staging';
               create database \"test-$NAME\" template \"test-staging\";
           "
