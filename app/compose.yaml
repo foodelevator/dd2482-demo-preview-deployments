@@ -4,6 +4,11 @@ services:
       - traefik.enable=true
       - traefik.http.routers.test-${NAME}.rule=Host(`${NAME:?error}.devops-demo.0m.nu`)
       - traefik.http.routers.test-${NAME}.tls.certresolver=default
+    environment:
+      - PGUSER=test
+      - PGPASSWORD=test
+      - PGHOST=172.17.0.1
+      - PGDATABASE=test-${NAME}
     build: .
     networks:
       - traefik
