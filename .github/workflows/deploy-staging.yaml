@@ -4,11 +4,11 @@ on:
     branches: [main]
 
 jobs:
-  deploy_pr_preview:
+  deploy_staging:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout PR
+      - name: Checkout
         uses: actions/checkout@v5
 
       - name: Load SSH Key

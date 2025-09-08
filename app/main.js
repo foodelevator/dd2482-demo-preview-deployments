@@ -12,7 +12,7 @@ await sql`
 `;
 
 polka()
-    .get("/", (req, res) => {
+    .get("/", async (req, res) => {
         const [count] = await sql`
             select value from count;
         `;
