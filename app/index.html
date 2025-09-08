@@ -21,15 +21,7 @@
   </style>
 </head>
 <body>
-  <div id="counter">0</div>
-  <button onclick="increment()">Increment</button>
-
-  <script>
-    let count = 0;
-    function increment() {
-      count++;
-      document.getElementById("counter").innerText = count;
-    }
-  </script>
+  <div id="counter">$COUNT$</div>
+  <form method="post" action="/"><button>Increment</button></form>
 </body>
 </html>
