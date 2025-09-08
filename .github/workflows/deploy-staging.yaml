@@ -1,7 +1,7 @@
-name: "Deploy Pull Request Preview"
+name: "Deploy Staging"
 on:
-  pull_request:
-    types: [opened, synchronize]
+  push:
+    branches: [main]
 
 jobs:
   deploy_pr_preview:
@@ -23,5 +23,5 @@ jobs:
       - name: Run docker compose up
         env:
           DOCKER_HOST: ssh://user@ipv4-ssh.devops-demo.0m.nu
-          NAME: preview-${{ github.event.number }}
+          NAME: staging
         run: docker compose --project-name test-$NAME -f app/compose.yaml up --build -d

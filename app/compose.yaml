@@ -2,8 +2,8 @@ services:
   test:
     labels:
       - traefik.enable=true
-      - traefik.http.routers.test-preview-${PR}.rule=Host(`preview-${PR:?error}.devops-demo.0m.nu`)
-      - traefik.http.routers.test-preview-${PR}.tls.certresolver=default
+      - traefik.http.routers.test-${NAME}.rule=Host(`${NAME:?error}.devops-demo.0m.nu`)
+      - traefik.http.routers.test-${NAME}.tls.certresolver=default
     build: .
     networks:
       - traefik
