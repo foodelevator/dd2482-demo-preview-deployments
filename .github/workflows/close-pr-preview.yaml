@@ -32,5 +32,5 @@ jobs:
       - name: Run docker compose down
         env:
           DOCKER_HOST: ssh://user@ipv4-ssh.devops-demo.0m.nu
-          PR: ${{ github.event.number }}
-        run: docker compose --project-name test-preview-$PR -f app/compose.yaml down
+          NAME: preview-${{ github.event.number }}
+        run: docker compose --project-name test-$NAME -f app/compose.yaml down
