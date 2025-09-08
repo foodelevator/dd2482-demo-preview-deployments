@@ -18,6 +18,9 @@ polka()
         const [count] = await sql`
             select value from count;
         `;
+        res.writeHead(200, {
+            "Content-Type": "text/html; charset=UTF-8",
+        });
         res.end(index.replaceAll("$COUNT$", count.value));
     })
     .post("/", async (req, res) => {
@@ -26,8 +29,8 @@ polka()
             set value = value + 1;
         `;
         res.writeHead(303, {
-            'Location': "/",
-            'Content-Length': 0
+            "Location": "/",
+            "Content-Length": 0
         });
         res.end();
     })
