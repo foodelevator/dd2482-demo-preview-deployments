@@ -5,3 +5,19 @@ providers:
 api:
   insecure: true
   dashboard: true
+
+entrypoints:
+  http:
+    address: ":80"
+    asDefault: true
+  https:
+    address: ":443"
+    asDefault: true
+
+certificatesresolvers:
+  default:
+    acme:
+      email: "pls-no-spam@invalid.com"
+      httpchallenge:
+        entrypoint: http
+      storage: "/data/acme.json"
