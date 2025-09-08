@@ -1,0 +1,13 @@
+services:
+  test:
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.test-preview-${PR}.rule=Host(`preview-${PR:?error}.devops-demo.0m.nu`)
+      - traefik.http.routers.test-preview-${PR}.entrypoints=http
+    build: .
+    networks:
+      - traefik
+
+networks:
+  traefik:
+    external: true
