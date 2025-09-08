@@ -9,7 +9,7 @@ await sql`
         value integer
     );
     insert into count (value) values (0);
-`;
+`.simple();
 
 polka()
     .get("/", async (req, res) => {
