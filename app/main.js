@@ -5,8 +5,7 @@ import fs from "fs/promises";
 const sql = postgres({});
 
 await sql`
-    drop table if exists count;
-    create table count (
+    create table if not exists count (
         value integer
     );
     insert into count (value) values (0);
