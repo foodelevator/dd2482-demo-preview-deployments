@@ -5,11 +5,13 @@ import fs from "fs/promises";
 const sql = postgres({});
 
 await sql`
+    create extension if not exists "pgcrypto";
+
     create table if not exists todos ();
     alter table todos rename to todos__old;
 
     create table if not exists todos (
-        id serial primary key,
+        id uuid primary key default gen_random_uuid(),
         title text not null
     );
 
@@ -71,7 +73,7 @@ polka()
         res.end();
     })
     .post("/delete/:id", async (req, res) => {
-        const id = parseInt(req.params.id);
+        const id = req.params.id;
         if (id) {
             await sql`
                 delete from todos where id = ${id};
