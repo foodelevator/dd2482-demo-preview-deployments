@@ -12,6 +12,7 @@ services:
     build: .
     networks:
       - traefik
+    restart: always
 
 networks:
   traefik:
