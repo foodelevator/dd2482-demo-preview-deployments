@@ -37,7 +37,7 @@ function parseBody(req) {
 polka()
     .get("/", async (req, res) => {
         const todos = await sql`
-            select id, title from todos order by id desc;
+            select * from todos order by id desc;
         `;
 
         let todosHtml = '';
@@ -46,7 +46,9 @@ polka()
         } else {
             todosHtml = todos.map(todo => `
                 <li class="todo-item">
-                    <span class="todo-title">${escapeHtml(todo.title)}</span>
+                    <div class="todo-content">
+                        <div class="todo-title">${escapeHtml(todo.title)}</div>
+                    </div>
                     <form method="post" action="/delete/${todo.id}" style="display: inline;">
                         <button type="submit" class="delete-btn">Delete</button>
                     </form>
