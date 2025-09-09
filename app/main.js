@@ -12,7 +12,8 @@ await sql`
 
     create table if not exists todos (
         id uuid primary key default gen_random_uuid(),
-        title text not null
+        title text not null,
+        done boolean default false
     );
 
     insert into todos select * from todos__old;
@@ -37,7 +38,7 @@ function parseBody(req) {
 polka()
     .get("/", async (req, res) => {
         const todos = await sql`
-            select * from todos order by id desc;
+            select * from todos order by done asc, id desc;
         `;
 
         let todosHtml = '';
@@ -45,8 +46,11 @@ polka()
             todosHtml = '<li class="empty-state">No todos yet. Add one above!</li>';
         } else {
             todosHtml = todos.map(todo => `
-                <li class="todo-item">
+                <li class="todo-item ${todo.done ? 'done' : ''}">
                     <div class="todo-content">
+                        <form method="post" action="/toggle/${todo.id}" style="display: inline; margin-right: 10px;">
+                            <input type="checkbox" ${todo.done ? 'checked' : ''} onchange="this.form.submit()">
+                        </form>
                         <div class="todo-title">${escapeHtml(todo.title)}</div>
                     </div>
                     <form method="post" action="/delete/${todo.id}" style="display: inline;">
@@ -66,6 +70,19 @@ polka()
         if (body.title && body.title.trim()) {
             await sql`
                 insert into todos (title) values (${body.title.trim()});
+            `;
+        }
+        res.writeHead(303, {
+            "Location": "/",
+            "Content-Length": 0
+        });
+        res.end();
+    })
+    .post("/toggle/:id", async (req, res) => {
+        const id = req.params.id;
+        if (id) {
+            await sql`
+                update todos set done = not done where id = ${id};
             `;
         }
         res.writeHead(303, {

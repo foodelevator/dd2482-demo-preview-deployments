@@ -92,8 +92,26 @@
       align-items: flex-start;
     }
 
+    .todo-item.done {
+      background: #f8f9fa;
+      opacity: 0.7;
+    }
+
+    .todo-item.done .todo-title {
+      text-decoration: line-through;
+      color: #6c757d;
+    }
+
     .todo-content {
       flex: 1;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .todo-content input[type="checkbox"] {
+      margin-top: 2px;
+      cursor: pointer;
     }
 
     .todo-title {
