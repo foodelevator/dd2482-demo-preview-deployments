@@ -42,7 +42,7 @@ polka()
 
         let todosHtml = '';
         if (todos.length === 0) {
-            todosHtml = '<li class="empty-state">No todos yet. Add one above!</li>';
+            todosHtml = '<li class="empty-state">Thy quest journal awaits... Begin thy legendary adventures!</li>';
         } else {
             todosHtml = todos.map(todo => `
                 <li class="todo-item">
@@ -50,7 +50,7 @@ polka()
                         <div class="todo-title">${escapeHtml(todo.title)}</div>
                     </div>
                     <form method="post" action="/delete/${todo.id}" style="display: inline;">
-                        <button type="submit" class="delete-btn">Delete</button>
+                        <button type="submit" class="delete-btn">Vanquish</button>
                     </form>
                 </li>
             `).join('');
