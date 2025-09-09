@@ -4,8 +4,6 @@ on:
     types: [opened, synchronize]
 
 permissions:
-  contents: read
-  issues: write
   pull-requests: write
 
 jobs:
@@ -42,6 +40,7 @@ jobs:
         run: docker compose --project-name test-$NAME -f app/compose.yaml up --build -d
 
       - uses: actions/github-script@v8
+        if: github.event.action == 'opened'
         with:
           script: |
             github.rest.issues.createComment({
