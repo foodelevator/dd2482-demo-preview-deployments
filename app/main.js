@@ -12,7 +12,8 @@ await sql`
 
     create table if not exists todos (
         id uuid primary key default gen_random_uuid(),
-        title text not null
+        title text not null,
+        description text not null default ''
     );
 
     insert into todos select * from todos__old;
@@ -48,6 +49,7 @@ polka()
                 <li class="todo-item">
                     <div class="todo-content">
                         <div class="todo-title">${escapeHtml(todo.title)}</div>
+                        <div class="todo-description">${escapeHtml(todo.description)}</div>
                     </div>
                     <form method="post" action="/delete/${todo.id}" style="display: inline;">
                         <button type="submit" class="delete-btn">Delete</button>
@@ -65,7 +67,7 @@ polka()
         const body = await parseBody(req);
         if (body.title && body.title.trim()) {
             await sql`
-                insert into todos (title) values (${body.title.trim()});
+                insert into todos (title, description) values (${body.title.trim()}, ${(body.description || "").trim()});
             `;
         }
         res.writeHead(303, {
