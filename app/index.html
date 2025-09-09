@@ -1,27 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <title>Increment Button</title>
+  <title>Todo App</title>
   <style>
     body {
       font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+
+    h1 {
       text-align: center;
-      margin-top: 50px;
+      color: #333;
     }
-    #counter {
-      font-size: 2em;
-      margin: 20px;
+
+    .add-todo {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 30px;
     }
-    button {
-      font-size: 1.2em;
+
+    .add-todo input {
+      flex: 1;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    .add-todo button {
       padding: 10px 20px;
+      font-size: 16px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
       cursor: pointer;
+    }
+
+    .add-todo button:hover {
+      background-color: #0056b3;
+    }
+
+    .todo-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .todo-item {
+      background: white;
+      margin-bottom: 10px;
+      padding: 15px;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .todo-title {
+      font-size: 16px;
+      color: #333;
+    }
+
+    .delete-btn {
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .delete-btn:hover {
+      background-color: #c82333;
+    }
+
+    .empty-state {
+      text-align: center;
+      color: #666;
+      font-style: italic;
+      margin-top: 50px;
     }
   </style>
 </head>
+
 <body>
-  <div id="counter">$COUNT$</div>
-  <form method="post" action="/"><button>Increment</button></form>
+  <h1>Todo App</h1>
+
+  <form method="post" action="/add" class="add-todo">
+    <input type="text" name="title" placeholder="Enter a new todo..." required>
+    <button type="submit">Add Todo</button>
+  </form>
+
+  <ul class="todo-list">
+    $TODOS$
+  </ul>
 </body>
+
 </html>

@@ -49,4 +49,3 @@ jobs:
               repo: context.repo.repo,
               body: 'A preview of this PR has been deployed to https://preview-${{ github.event.number }}.devops-demo.0m.nu/'
             })
-
