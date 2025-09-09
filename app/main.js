@@ -12,10 +12,11 @@ await sql`
 
     create table if not exists todos (
         id uuid primary key default gen_random_uuid(),
-        title text not null
+        title text not null,
+        deadline date
     );
 
-    insert into todos select * from todos__old;
+    insert into todos (id, title) select id, title from todos__old;
     drop table todos__old;
 `.simple();
 
@@ -44,16 +45,23 @@ polka()
         if (todos.length === 0) {
             todosHtml = '<li class="empty-state">No todos yet. Add one above!</li>';
         } else {
-            todosHtml = todos.map(todo => `
-                <li class="todo-item">
-                    <div class="todo-content">
-                        <div class="todo-title">${escapeHtml(todo.title)}</div>
-                    </div>
-                    <form method="post" action="/delete/${todo.id}" style="display: inline;">
-                        <button type="submit" class="delete-btn">Delete</button>
-                    </form>
-                </li>
-            `).join('');
+            todosHtml = todos.map(todo => {
+                const urgencyClass = getUrgencyClass(todo.deadline);
+                const deadlineHtml = todo.deadline ? 
+                    `<div class="todo-deadline ${urgencyClass}">Due: ${formatDate(todo.deadline)}</div>` : '';
+                
+                return `
+                    <li class="todo-item ${urgencyClass}">
+                        <div class="todo-content">
+                            <div class="todo-title">${escapeHtml(todo.title)}</div>
+                            ${deadlineHtml}
+                        </div>
+                        <form method="post" action="/delete/${todo.id}" style="display: inline;">
+                            <button type="submit" class="delete-btn">Delete</button>
+                        </form>
+                    </li>
+                `;
+            }).join('');
         }
 
         res.writeHead(200, {
@@ -64,8 +72,9 @@ polka()
     .post("/add", async (req, res) => {
         const body = await parseBody(req);
         if (body.title && body.title.trim()) {
+            const deadline = body.deadline || null;
             await sql`
-                insert into todos (title) values (${body.title.trim()});
+                insert into todos (title, deadline) values (${body.title.trim()}, ${deadline});
             `;
         }
         res.writeHead(303, {
@@ -98,4 +107,29 @@ function escapeHtml(text) {
         "'": '&#039;'
     };
     return text.replace(/[&<>"']/g, m => map[m]);
+}
+
+function formatDate(dateString) {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { 
+        year: 'numeric', 
+        month: 'short', 
+        day: 'numeric' 
+    });
+}
+
+function getUrgencyClass(deadline) {
+    if (!deadline) return '';
+    
+    const today = new Date();
+    const deadlineDate = new Date(deadline);
+    const diffTime = deadlineDate - today;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    if (diffDays < 0) return 'urgent'; // Overdue
+    if (diffDays <= 1) return 'urgent'; // Due today or tomorrow
+    if (diffDays <= 3) return 'warning'; // Due within 3 days
+    
+    return '';
 }
